@@ -1,0 +1,15 @@
+# Dependencias
+node_modules/
+__pycache__/
+
+# Archivos pesados de Circom y llaves (Opcional, pero recomendado)
+*.ptau
+*.zkey
+*.wtns
+*.r1cs
+*.sym
+
+# Entornos virtuales de Python (si usaste uno)
+venv/
+env/
+.env
