@@ -77,29 +77,37 @@ hash_cliente = st.text_input("Ingresa tu Hash de Cliente (Ej. 0xA1B2...):")
 # (Luego conectaremos esto al circuito ZK real que tienes en tu Mac)
 
 
-# 3. La Lógica de Verificación
-#3. La Lógica de Verificación ZK REAL
-if st.button("Validar Inclusión ZK"):
-    with st.spinner("Ejecutando criptografía de conocimiento cero..."):
-        try:
-            # Tu Mac M4 ejecuta SnarkJS en el fondo para validar matemáticamente
-            comando = ["npx", "--yes", "snarkjs", "groth16", "verify", "verificador_solvencia.json", "public_solvencia.json", "proof_solvencia.json"]
-            
-            # Capturamos la respuesta de la terminal
-            resultado = subprocess.run(comando, capture_output=True, text=True)
-            
-            # Si SnarkJS devuelve un "OK", la matemática es irrefutable
-            if "OK" in resultado.stdout:
-                st.success(f"✅ **¡Identidad y Saldo Verificados Matemáticamente!**")
-                st.info("La prueba ZK-SNARK es válida. Tu hash privado coincide perfectamente con la raíz de Merkle (Merkle Root) auditada por el banco.")
-                st.balloons()
-            else:
-                st.error("❌ Alerta Forense: La prueba ZK falló o los fondos fueron alterados.")
-                st.code(resultado.stdout) # Mostramos el error criptográfico real
-                
-        except FileNotFoundError:
-             st.error("⚠️ Error: No se encontraron los archivos criptográficos (.json) generados por Circom/SnarkJS en esta carpeta.")
-        except Exception as e:
-             st.error(f"⚠️ Error del sistema: {e}")
 
-            
+
+# 3. La Lógica de Verificación ZK REAL (Versión Blindada para Servidor)
+if st.button("Validar Inclusión ZK"):
+    with st.spinner("Conectando con el motor criptográfico en la nube..."):
+        try:
+            # 1. GPS de archivos: Obtenemos la ruta exacta de la máquina virtual
+            import os
+            directorio_actual = os.path.dirname(os.path.abspath(__file__))
+            v_key = os.path.join(directorio_actual, "verificador_solvencia.json")
+            p_solv = os.path.join(directorio_actual, "public_solvencia.json")
+            proof = os.path.join(directorio_actual, "proof_solvencia.json")
+
+            # 2. Verificación de existencia real
+            if not os.path.exists(v_key):
+                st.error(f"❌ Los archivos JSON no subieron a GitHub. Faltan en la ruta: {v_key}")
+            else:
+                # 3. Comando con shell=True para que Linux encuentre 'npx' correctamente
+                comando_str = f"npx --yes snarkjs groth16 verify {v_key} {p_solv} {proof}"
+                
+                # Ejecutamos abriendo una terminal interna
+                resultado = subprocess.run(comando_str, shell=True, capture_output=True, text=True)
+                
+                if "OK" in resultado.stdout:
+                    st.success(f"✅ **¡Identidad y Saldo Verificados Matemáticamente!**")
+                    st.info("La prueba ZK-SNARK es válida. Tu hash privado coincide perfectamente con la raíz de Merkle auditada.")
+                    st.balloons()
+                else:
+                    st.error("❌ Alerta Forense: La prueba ZK falló.")
+                    # Mostramos exactamente qué dice el motor de Node.js si falla
+                    st.code(f"Salida: {resultado.stdout}\nErrores: {resultado.stderr}")
+                    
+        except Exception as e:
+             st.error(f"⚠️ Error crítico del sistema: {e}")
