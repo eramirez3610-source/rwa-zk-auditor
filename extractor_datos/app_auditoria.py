@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import subprocess
 import json
+import os
 from supabase import create_client
 
 # 🔐 Configuración de tu Centro de Mando (Usa tus credenciales de Supabase)
