@@ -75,11 +75,7 @@ hash_cliente = st.text_input("Ingresa tu Hash de Cliente (Ej. 0xA1B2...):")
 
 # 2. Base de datos simulada del Árbol de Merkle
 # (Luego conectaremos esto al circuito ZK real que tienes en tu Mac)
-arbol_merkle = {
-    "0xA1B2C3D4": {"saldo": 10000, "status": "Empaquetado y Verificado 🟢"},
-    "0x9F8E7D6C": {"saldo": 50000, "status": "Empaquetado y Verificado 🟢"},
-    "0xEDGAR_M4": {"saldo": 250000, "status": "Empaquetado en Bóveda Fría 🥶"}
-}
+
 
 # 3. La Lógica de Verificación
 #3. La Lógica de Verificación ZK REAL
@@ -105,26 +101,5 @@ if st.button("Validar Inclusión ZK"):
              st.error("⚠️ Error: No se encontraron los archivos criptográficos (.json) generados por Circom/SnarkJS en esta carpeta.")
         except Exception as e:
              st.error(f"⚠️ Error del sistema: {e}")
+             
             
-if st.button("Validar Inclusión ZK"):
-    with st.spinner("Ejecutando criptografía de conocimiento cero..."):
-        try:
-            # Tu Mac M4 ejecuta SnarkJS en el fondo para validar matemáticamente
-            comando = ["snarkjs", "groth16", "verify", "verificador_solvencia.json", "public_solvencia.json", "proof_solvencia.json"]
-            
-            # Capturamos la respuesta de la terminal
-            resultado = subprocess.run(comando, capture_output=True, text=True)
-            
-            # Si SnarkJS devuelve un "OK", la matemática es irrefutable
-            if "OK" in resultado.stdout:
-                st.success(f"✅ **¡Identidad y Saldo Verificados Matemáticamente!**")
-                st.info("La prueba ZK-SNARK es válida. Tu hash privado coincide perfectamente con la raíz de Merkle (Merkle Root) auditada por el banco.")
-                st.balloons()
-            else:
-                st.error("❌ Alerta Forense: La prueba ZK falló o los fondos fueron alterados.")
-                st.code(resultado.stdout) # Mostramos el error criptográfico real
-                
-        except FileNotFoundError:
-             st.error("⚠️ Error: No se encontraron los archivos criptográficos (.json) generados por Circom/SnarkJS en esta carpeta.")
-        except Exception as e:
-             st.error(f"⚠️ Error del sistema: {e}")
