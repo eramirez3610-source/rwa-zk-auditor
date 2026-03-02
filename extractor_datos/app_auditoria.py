@@ -104,7 +104,8 @@ if st.button("Validar Inclusión ZK"):
         except FileNotFoundError:
              st.error("⚠️ Error: No se encontraron los archivos criptográficos (.json) generados por Circom/SnarkJS en esta carpeta.")
         except Exception as e:
-             st.error(f"⚠️ Error del sistema: {e}")3. La Lógica de Verificación ZK REAL
+             st.error(f"⚠️ Error del sistema: {e}")
+            
 if st.button("Validar Inclusión ZK"):
     with st.spinner("Ejecutando criptografía de conocimiento cero..."):
         try:
