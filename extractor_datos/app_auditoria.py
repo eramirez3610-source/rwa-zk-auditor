@@ -104,4 +104,26 @@ if st.button("Validar Inclusión ZK"):
         except FileNotFoundError:
              st.error("⚠️ Error: No se encontraron los archivos criptográficos (.json) generados por Circom/SnarkJS en esta carpeta.")
         except Exception as e:
+             st.error(f"⚠️ Error del sistema: {e}")3. La Lógica de Verificación ZK REAL
+if st.button("Validar Inclusión ZK"):
+    with st.spinner("Ejecutando criptografía de conocimiento cero..."):
+        try:
+            # Tu Mac M4 ejecuta SnarkJS en el fondo para validar matemáticamente
+            comando = ["snarkjs", "groth16", "verify", "verificador_solvencia.json", "public_solvencia.json", "proof_solvencia.json"]
+            
+            # Capturamos la respuesta de la terminal
+            resultado = subprocess.run(comando, capture_output=True, text=True)
+            
+            # Si SnarkJS devuelve un "OK", la matemática es irrefutable
+            if "OK" in resultado.stdout:
+                st.success(f"✅ **¡Identidad y Saldo Verificados Matemáticamente!**")
+                st.info("La prueba ZK-SNARK es válida. Tu hash privado coincide perfectamente con la raíz de Merkle (Merkle Root) auditada por el banco.")
+                st.balloons()
+            else:
+                st.error("❌ Alerta Forense: La prueba ZK falló o los fondos fueron alterados.")
+                st.code(resultado.stdout) # Mostramos el error criptográfico real
+                
+        except FileNotFoundError:
+             st.error("⚠️ Error: No se encontraron los archivos criptográficos (.json) generados por Circom/SnarkJS en esta carpeta.")
+        except Exception as e:
              st.error(f"⚠️ Error del sistema: {e}")
