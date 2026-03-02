@@ -83,7 +83,7 @@ if st.button("Validar Inclusión ZK"):
     with st.spinner("Ejecutando criptografía de conocimiento cero..."):
         try:
             # Tu Mac M4 ejecuta SnarkJS en el fondo para validar matemáticamente
-            comando = ["snarkjs", "groth16", "verify", "verificador_solvencia.json", "public_solvencia.json", "proof_solvencia.json"]
+            comando = ["npx", "--yes", "snarkjs", "groth16", "verify", "verificador_solvencia.json", "public_solvencia.json", "proof_solvencia.json"]
             
             # Capturamos la respuesta de la terminal
             resultado = subprocess.run(comando, capture_output=True, text=True)
@@ -101,5 +101,5 @@ if st.button("Validar Inclusión ZK"):
              st.error("⚠️ Error: No se encontraron los archivos criptográficos (.json) generados por Circom/SnarkJS en esta carpeta.")
         except Exception as e:
              st.error(f"⚠️ Error del sistema: {e}")
-             
+
             
