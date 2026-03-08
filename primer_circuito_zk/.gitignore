@@ -1,0 +1,35 @@
+# Ignorar archivos masivos de la ceremonia ZK
+*.ptau
+
+# Ignorar carpetas de dependencias si instalaste snarkjs localmente
+node_modules/
+
+# Ignorar variables de entorno
+.env
+
+# --- ZK-RWA Project Rules ---
+
+# Python (No queremos basura de ejecución)
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Streamlit (Configuraciones locales de la interfaz)
+.streamlit/
+
+# Solidity & Compiler (No subir contratos compilados, se compilan al ejecutar)
+artifacts/
+cache/
+.solcx/
+bin/
+
+# macOS (Archivos ocultos del sistema)
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Node/SnarkJS (Si llegas a meter carpetas de node_modules)
+node_modules/
+npm-debug.log*
